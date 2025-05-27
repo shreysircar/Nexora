@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nexora_frontend/screens/splash_screen.dart'; 
+import 'package:nexora_frontend/presentation/screens/splash_screen.dart'; 
 
 void main() {
   runApp(NexoraApp());

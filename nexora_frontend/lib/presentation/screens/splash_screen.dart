@@ -22,9 +22,9 @@ class SplashScreen extends StatelessWidget {
           children: [
             Center(
               child: Image.asset(
-                'assets/images/Nexora_color.png',
-                width: 180,
-                height: 180,
+                'assets/images/Nexora_white1.png',
+                width: 200,
+                height: 200,
               ),
             ),
             Positioned(
@@ -37,7 +37,7 @@ class SplashScreen extends StatelessWidget {
                 style: GoogleFonts.brunoAceSc(
   textStyle: TextStyle(
     fontSize: 36,
-    color: const Color.fromARGB(255, 232, 183, 234),
+    color: const Color.fromARGB(255, 240, 210, 241),
   ),
 )
               ),
