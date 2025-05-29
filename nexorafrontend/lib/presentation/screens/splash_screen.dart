@@ -1,7 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart'; // Add this import
+import '../routes/app_routes.dart'; // Import your routes
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget { // Changed to StatefulWidget
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToNextScreen();
+  }
+
+  void _navigateToNextScreen() async {
+    // Add any initialization logic here (like checking auth status)
+    await Future.delayed(Duration(seconds: 2)); // Show splash for 2 seconds
+
+    // Navigate to your desired screen (login as example)
+    Get.offNamed(AppRoutes.login); // or AppRoutes.home if already authenticated
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,14 +53,14 @@ class SplashScreen extends StatelessWidget {
               left: 0,
               right: 0,
               child: Text(
-                "Nexora",
-                textAlign: TextAlign.center,
-                style: GoogleFonts.brunoAceSc(
-  textStyle: TextStyle(
-    fontSize: 36,
-    color: const Color.fromARGB(255, 240, 210, 241),
-  ),
-)
+                  "Nexora",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.brunoAceSc(
+                    textStyle: TextStyle(
+                      fontSize: 36,
+                      color: const Color.fromARGB(255, 240, 210, 241),
+                    ),
+                  )
               ),
             ),
           ],
