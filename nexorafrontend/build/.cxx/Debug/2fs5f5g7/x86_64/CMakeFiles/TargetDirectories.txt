@@ -1,2 +1,0 @@
-C:/Users/sirca/Programming/Nexora/nexorafrontend/build/.cxx/Debug/2fs5f5g7/x86_64/CMakeFiles/edit_cache.dir
-C:/Users/sirca/Programming/Nexora/nexorafrontend/build/.cxx/Debug/2fs5f5g7/x86_64/CMakeFiles/rebuild_cache.dir
