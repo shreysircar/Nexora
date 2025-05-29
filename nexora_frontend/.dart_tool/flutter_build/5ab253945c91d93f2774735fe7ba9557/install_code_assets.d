@@ -1,1 +1,0 @@
- C:\\Users\\sirca\\Programming\\Nexora\\nexora_frontend\\.dart_tool\\flutter_build\\5ab253945c91d93f2774735fe7ba9557\\native_assets.json: 

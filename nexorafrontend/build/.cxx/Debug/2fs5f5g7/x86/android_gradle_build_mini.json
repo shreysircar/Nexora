@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "C:\\flutterSDK\\flutter\\packages\\flutter_tools\\gradle\\src\\main\\scripts\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\sirca\\AppData\\Local\\Android\\sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\Users\\sirca\\Programming\\Nexora\\nexorafrontend\\build\\.cxx\\Debug\\2fs5f5g7\\x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\sirca\\AppData\\Local\\Android\\sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\Users\\sirca\\Programming\\Nexora\\nexorafrontend\\build\\.cxx\\Debug\\2fs5f5g7\\x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
