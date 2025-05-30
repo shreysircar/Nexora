@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToNextScreen() async {
     // Add any initialization logic here (like checking auth status)
-    await Future.delayed(Duration(seconds: 2)); // Show splash for 2 seconds
+    await Future.delayed(Duration(seconds: 6)); // Show splash for 2 seconds
 
     // Navigate to your desired screen (login as example)
     Get.offNamed(AppRoutes.login); // or AppRoutes.home if already authenticated
