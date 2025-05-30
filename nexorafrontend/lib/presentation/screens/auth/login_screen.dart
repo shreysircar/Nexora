@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           'Nexora',
                           style: GoogleFonts.brunoAceSc(
-                            fontSize: 36,
+                            fontSize: 40,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFFE6EEFA),
                           ),
