@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/constants.dart';
+import '../../../data/services/auth_service.dart';
+import '../../routes/app_routes.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -19,10 +21,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isLoading = false;
 
   void _registerUser() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
-      await Future.delayed(const Duration(seconds: 2));
-      setState(() => _isLoading = false);
+    setState(() => _isLoading = true);
+
+    final result = await AuthService.register(
+      _usernameController.text,
+      _emailController.text,
+      _passwordController.text,
+    );
+
+    setState(() => _isLoading = false);
+
+    if (result['success'] == true) {
+      // Navigate to home screen
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result['error'])),
+      );
     }
   }
 
@@ -42,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           // Elevated sliding panel (matches login screen)
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.15, // Slightly higher to accommodate extra field
+            top: MediaQuery.of(context).size.height * 0.25, // Slightly higher to accommodate extra field
             bottom: 0,
             left: 0,
             right: 0,

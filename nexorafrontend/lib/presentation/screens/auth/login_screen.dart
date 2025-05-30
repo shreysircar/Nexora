@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/constants.dart';
+import '../../../data/services/auth_service.dart';
+import '../../routes/app_routes.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,8 +23,49 @@ class _LoginScreenState extends State<LoginScreen> {
   void _loginUser() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
-      await Future.delayed(const Duration(seconds: 7));
-      setState(() => _isLoading = false);
+
+      try {
+        await AuthService.login(
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
+        );
+        Get.offAllNamed(AppRoutes.home);
+      } on DioException catch (e) {
+        String errorMessage = "Login failed";
+        if (e.response?.statusCode == 401) {
+          errorMessage = "Invalid email or password";
+        } else if (e.response?.data != null) {
+          errorMessage = e.response!.data['message'] ?? errorMessage;
+        }
+
+        Get.snackbar(
+          "Error",
+          errorMessage,
+          snackPosition: SnackPosition.BOTTOM,  // <-- Key change here
+          backgroundColor: Colors.white,
+          colorText: Colors.black87,
+          borderWidth: 1,
+          borderColor: Colors.grey[300],
+          margin: const EdgeInsets.all(10),
+          borderRadius: 8,
+          duration: const Duration(seconds: 3),
+          forwardAnimationCurve: Curves.easeOutCubic,  // Smooth slide-up
+          reverseAnimationCurve: Curves.easeInCubic,   // Smooth slide-down
+          animationDuration: const Duration(milliseconds: 400),
+        );
+      } catch (e) {
+        Get.snackbar(
+          "Error",
+          "An unexpected error occurred",
+          snackPosition: SnackPosition.BOTTOM,  // <-- Consistent positioning
+          backgroundColor: Colors.white,
+          colorText: Colors.black87,
+          borderWidth: 1,
+          borderColor: Colors.grey[300],
+        );
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -41,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           // Elevated sliding panel (positioned higher)
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.2,
+            top: MediaQuery.of(context).size.height * 0.25,
             bottom: 0,
             left: 0,
             right: 0,
