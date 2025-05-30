@@ -93,10 +93,10 @@ class AuthService {
   static final Dio _dio = Dio();
   static const _storage = FlutterSecureStorage();
 
-  static void init() {
+  static Future<void> init() async{
     // Initialize Dio with current baseUrl
     _dio.options = BaseOptions(
-      baseUrl: _getEffectiveBaseUrl(),
+      baseUrl: await _getEffectiveBaseUrl(),
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {
@@ -118,19 +118,16 @@ class AuthService {
     ]);
   }
 
-  static String _getEffectiveBaseUrl() {
-    // Priority order:
-    // 1. Command-line override (via --dart-define)
-    // 2. Environment-based default
+  static Future<String> _getEffectiveBaseUrl() async {  // Changed to async
     const String? commandLineUrl = String.fromEnvironment('BASE_URL');
     if (commandLineUrl != null && commandLineUrl.isNotEmpty) {
       return commandLineUrl;
     }
 
     if (kReleaseMode) {
-      return 'https://api.nexora.com'; // Production
+      return 'https://api.nexora.com';
     }
-    return Env.baseUrl; // Development (emulator/physical device)
+    return await Env.baseUrl;  // Added await
   }
 
   static Future<bool> login(String email, String password) async {

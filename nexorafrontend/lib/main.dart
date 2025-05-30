@@ -5,8 +5,9 @@ import 'package:nexora_frontend/presentation/screens/splash_screen.dart';
 
 import 'data/services/auth_service.dart';
 
-void main() {
-  AuthService.init();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AuthService.init();  // Initialize before runApp
   runApp(NexoraApp());
 }
 

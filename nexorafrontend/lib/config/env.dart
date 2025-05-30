@@ -1,30 +1,69 @@
-//const String baseUrl = "http://localhost:5000"; // or your hosted backend URL
-
 // config/env.dart
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 
 class Env {
-  // Base URL configuration with compile-time constant
-  static String baseUrl = _kBaseUrl;
-
-  // Private constants for different environments
+  // Private constants for all environments
   static const String _kProdUrl = 'https://api.nexora.com';
-  static const String _kDevUrl = 'http://10.0.2.2:5000';       //android emulators
-  static const String _kFallbackUrl = 'http://localhost:5000';   //physical devices
+  static const String _kDevEmulatorUrl = 'http://10.0.2.2:5000';
+  static const String _kDevPhysicalUrl = 'http://192.168.1.10:5000'; // ← Replace with your local IP
+  static const String _kLocalhostUrl = 'http://localhost:5000';
 
-  // Non-constant getter for runtime environment detection
-  static String get _kBaseUrl {
+  // Synchronous getter for non-async contexts (e.g., main())
+  static String get baseUrlSync {
     if (kReleaseMode) return _kProdUrl;
-    if (kDebugMode) return _kDevUrl;
-    return _kFallbackUrl;
+    if (kDebugMode && Platform.isAndroid) return _kDevEmulatorUrl; // Most common dev case
+    return _kLocalhostUrl; // Fallback
   }
 
-  // Environment flags (can be constants)
+  // Async getter with precise device detection
+  static Future<String> get baseUrl async {
+    if (kReleaseMode) return _kProdUrl;
+
+    // Handle mobile platforms
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      try {
+        final isEmulator = await _isEmulator();
+        return isEmulator ? _kDevEmulatorUrl : _kDevPhysicalUrl;
+      } catch (e) {
+        debugPrint('Device detection error: $e');
+        return _kDevPhysicalUrl; // Fail-safe to physical device URL
+      }
+    }
+
+    // Default for web/desktop
+    return _kLocalhostUrl;
+  }
+
+  static Future<bool> _isEmulator() async {
+    final deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      return !androidInfo.isPhysicalDevice; // True for emulator
+    } else if (Platform.isIOS) {
+      final iosInfo = await deviceInfo.iosInfo;
+      return !iosInfo.isPhysicalDevice; // True for simulator
+    }
+    return false; // Non-mobile platforms
+  }
+
+  // Environment flags
   static const bool isProduction = kReleaseMode;
   static const bool isDebug = kDebugMode;
 
-  // Method to get URL with optional override
-  static String getBaseUrl({String? override}) {
-    return override ?? _kBaseUrl;
+  // Helper to print current config (debug only)
+  static Future<void> logCurrentConfig() async {
+    if (kDebugMode) {
+      debugPrint('Environment Configuration:');
+      debugPrint('- Mode: ${isProduction ? 'Production' : 'Development'}');
+      debugPrint('- Platform: ${Platform.operatingSystem}');
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+        final isEmulator = await _isEmulator();
+        debugPrint('- Device: ${isEmulator ? 'Emulator' : 'Physical'}');
+      }
+      debugPrint('- API URL: ${await baseUrl}');
+    }
   }
 }
