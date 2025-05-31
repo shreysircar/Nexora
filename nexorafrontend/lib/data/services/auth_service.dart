@@ -14,7 +14,7 @@ class AuthService {
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {
-        'Content-Type': 'application/json', // Add this
+        'Content-Type': 'application/json',
       },
       validateStatus: (status) => status! < 500,
     );
